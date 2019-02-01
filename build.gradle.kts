@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     java
     kotlin("jvm") version Versions.kotlinVersion
@@ -13,8 +15,17 @@ apply {
     plugin("io.spring.dependency-management")
 }
 tasks {
+    withType(KotlinCompile::class.java).all {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
     jar {
         archiveClassifier.set("jar")
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 dependencies {
@@ -23,7 +34,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.springfox:springfox-swagger2:${Versions.swagger}")
     implementation("io.springfox:springfox-swagger-ui:${Versions.swagger}")
-    implementation("com.natpryce:konfig:1.6.10.0")
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+        exclude("junit")
+    }
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

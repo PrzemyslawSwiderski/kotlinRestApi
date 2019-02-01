@@ -1,0 +1,5 @@
+spring:
+  security:
+    user:
+      name: testUser
+      password: c8be15de-4488-4490-9dc6-fab213321323213213123213
